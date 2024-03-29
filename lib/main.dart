@@ -17,6 +17,14 @@ class QRCodeApp extends StatelessWidget {
         'home': (_) => const HomeScreen(),
         'map': (_) => const MapScreen()
       },
+      // Tema principal de la aplicación (se recomienda trabajarlo en línea para ver reflejados los cambios en caliente, una vez terminado, se puede separar su declaración en un archivo de tema independiente)
+      theme: ThemeData(
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+              unselectedItemColor: Colors.cyan,
+              selectedItemColor: Colors.black38),
+          appBarTheme: const AppBarTheme(backgroundColor: Colors.cyan),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+              backgroundColor: Colors.cyan)),
     );
   }
 }
