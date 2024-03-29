@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_flutter_app/partials/address_view.dart';
 import 'package:qr_code_flutter_app/partials/maps_view.dart';
+import 'package:qr_code_flutter_app/providers/user_interface_provider.dart';
 import 'package:qr_code_flutter_app/widgets/scan_button.dart';
 import 'package:qr_code_flutter_app/widgets/custom_navigation_bar.dart';
 
@@ -35,10 +37,11 @@ class _HomeScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Verificar el tab de bavegación inferior actualmente seleccionado, y retornar la vista o partial correspondiente como contenido principal de HomeScreen
-    final currentIndex = 0;
+    // Obtener la instancia de UserIntefaceProvider (gestionada por Provider)
+    final userInterfaceProvider = Provider.of<UserIntefaceProvider>(context);
 
-    switch (currentIndex) {
+    // Verificar el tab de bavegación inferior actualmente seleccionado, y retornar la vista o partial correspondiente como contenido principal de HomeScreen
+    switch (userInterfaceProvider.selectedOptionMenu) {
       case 0:
         return const AddressView();
       case 1:
