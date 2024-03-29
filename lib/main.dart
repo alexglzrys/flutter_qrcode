@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_code_flutter_app/providers/user_interface_provider.dart';
 import 'package:qr_code_flutter_app/screens/home_screen.dart';
 import 'package:qr_code_flutter_app/screens/map_screen.dart';
 
-void main() => runApp(const QRCodeApp());
+void main() {
+  runApp(
+    // Declarar el uso del gestor de estado Provider (para múltiples instancias)
+    MultiProvider(
+        // Registrar todas las clases que administrará nuestro Provider, mismas que usará la aplicación de forma global
+        providers: [
+          // Cada clase registrada, Provider se encagará de generar una única instancia (singletón) ya sea de forma instantanea o peresoza (generada bajo demanda)
+          // Estas instancias estarán disponibles desde cualquier parte de la aplicación, solo es cuestión de solicitarlas a Provider.
+          ChangeNotifierProvider(create: (_) => UserIntefaceProvider())
+        ],
+        child: const QRCodeApp()),
+  );
+}
 
 class QRCodeApp extends StatelessWidget {
   const QRCodeApp({super.key});
