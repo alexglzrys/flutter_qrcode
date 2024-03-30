@@ -6,13 +6,13 @@ class ScanModel {
   // El identificador del recurso
   int? id;
   // http (sitio Web) | geo (Geolocalización)
-  String type;
+  String? type;
   // Uri | geolocation
   String value;
 
   ScanModel({
     this.id,
-    required this.type,
+    this.type,
     required this.value,
   }) {
     // Inicializar el tipo de recurso escaneado (solo se permiten direcciones Web o coordenadas de geolocalización)

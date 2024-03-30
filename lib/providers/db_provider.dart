@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qr_code_flutter_app/models/scan_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 // Provider referente a la gestión y almacenamiento de información en la base de datos SQLite
@@ -46,5 +47,16 @@ class DBProvider {
       );
       ''');
     });
+  }
+
+  // Método para insertar un nuevo scan en base de datos
+  Future<int> insertNewScan(ScanModel scan) async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Insertar un nuevo registro en la tabla scans
+    final response = await db.insert('scans', scan.toJson());
+    // La respuesta se corresponde con el id asignado al registro en la base de datos
+    print('Registro: ID $response');
+    return response;
   }
 }
