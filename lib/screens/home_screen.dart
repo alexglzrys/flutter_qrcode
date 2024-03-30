@@ -43,8 +43,8 @@ class _HomeScreenBody extends StatelessWidget {
     final userInterfaceProvider = Provider.of<UserIntefaceProvider>(context);
 
     // TODO: Temporal leer la base de datos
-    final newScan = ScanModel(value: 'https://somosplasa.com');
-    DBProvider.db.insertNewScan(newScan);
+    //final newScan = ScanModel(value: 'https://somosplasa.com');
+    DBProvider.db.getAllScans();
 
     // Verificar el tab de bavegación inferior actualmente seleccionado, y retornar la vista o partial correspondiente como contenido principal de HomeScreen
     switch (userInterfaceProvider.selectedOptionMenu) {

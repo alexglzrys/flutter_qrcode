@@ -59,4 +59,49 @@ class DBProvider {
     print('Registro: ID $response');
     return response;
   }
+
+  // Método para recuperar todos los registros scan almacenados en la base de datos
+  Future<List<ScanModel>> getAllScans() async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Recupearar todos los registros almacenados en la tabla scans
+    final response = await db.query('scans');
+
+    print(response);
+    // Verificar el resultado de la respuesta
+    // Si no hay datos, retornamos una lista vacia
+    // Si hay registros, retornamos una lista con objetos de tipo ScanModel (cada objeto se corresponde con un registro recuperado de la BD)
+    return response.isNotEmpty
+        ? response.map((scan) => ScanModel.fromJson(scan)).toList()
+        : [];
+  }
+
+  // Método para recuperar los registros scan almacenados en la base de datos que coincidan con el id pasado como parámetro
+  Future<List<ScanModel>> getScanById(int id) async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Recupearar todos los registros almacenados en la tabla scans cuyo id sea igual al valor pasado como parametro en el método
+    final response = await db.query('scans', where: 'id = ?', whereArgs: [id]);
+    // Verificar el resultado de la respuesta
+    // Si no hay datos, retornamos una lista vacia
+    // Si hay registros, retornamos una lista con objetos de tipo ScanModel (cada objeto se corresponde con un registro recuperado de la BD)
+    return response.isNotEmpty
+        ? response.map((scan) => ScanModel.fromJson(scan)).toList()
+        : [];
+  }
+
+  // Método para recuperar todos los registros por un tipo especificado (http o geo)
+  Future<List<ScanModel>> getScansByType(String type) async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Recuperar todos los registros cuyo tipo sea el mismo que se pasa como parámetro
+    final response =
+        await db.query('scans', where: 'type = ?', whereArgs: [type]);
+    // Verificar el resultado de la respuesta
+    // Si no hay datos, retornamos una lista vacia
+    // Si hay registros, retornamos una lista con objetos de tipo ScanModel (cada objeto se corresponde con un registro recuperado de la BD)
+    return response.isNotEmpty
+        ? response.map((scan) => ScanModel.fromJson(scan)).toList()
+        : [];
+  }
 }
