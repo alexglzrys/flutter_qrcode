@@ -115,4 +115,31 @@ class DBProvider {
     // Retona la cantidad de registros modificados en la BD
     return response;
   }
+
+  // Método para eliminar todos los registros de una tabla en la base de datos
+  Future<int> deleteAll() async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Eliminar todos los registros de la tabla especificada
+    final response = await db.delete('scans');
+    // Retorna la cantidada de registros eliminados
+    return response;
+  }
+
+  // Método para eliminar un registro por su id
+  Future<int> deleteScanById(int id) async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Eliminar un registro de la tabla scans por el id especificado
+    final response = await db.delete('scans', where: 'id = ?', whereArgs: [id]);
+    // Retorna la cantidada de registros eliminados
+    return response;
+  }
+
+  // ? Cada método CRUD en SQFLite tiene su correspondiente RAW para realizar operaciones más complejas o a la medida.
+  // ? La ventaja de usar query, insert, delete, update consiste en que las consultas SQL son escapadas por defecto e internamente se previene la inyección SQL
+  // * Usar sus equivalentes en RAW deja al programador la responsabilidad de escapar los datos y prevenir inyecciones SQL, sin embargo, deja mayor libertad para ejecutar consultas que requieran un alto grado de complejidad
+  // rawDelete("DELETE FROM scans")
+  // rawQuery("SELECT * FROM scans WHERE type = '$type'")
+  // rawInsert("INSERT INTO scans () VALUES () ")
 }
