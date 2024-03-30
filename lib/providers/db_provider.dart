@@ -104,4 +104,15 @@ class DBProvider {
         ? response.map((scan) => ScanModel.fromJson(scan)).toList()
         : [];
   }
+
+  // Método para actualizar un registro en la base de datos
+  Future<int> updateScan(ScanModel scan) async {
+    // Obtener la referencia a la base de datos
+    final db = await database;
+    // Actalizar un registro por su id
+    final response = await db
+        .update('scans', scan.toJson(), where: 'id = ?', whereArgs: [scan.id]);
+    // Retona la cantidad de registros modificados en la BD
+    return response;
+  }
 }
