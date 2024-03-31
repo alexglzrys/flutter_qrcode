@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_flutter_app/providers/user_interface_provider.dart';
 import 'package:qr_code_flutter_app/screens/home_screen.dart';
 import 'package:qr_code_flutter_app/screens/map_screen.dart';
+import 'package:qr_code_flutter_app/services/scan_service.dart';
 
 void main() {
   runApp(
@@ -12,7 +13,8 @@ void main() {
         providers: [
           // Cada clase registrada, Provider se encagará de generar una única instancia (singletón) ya sea de forma instantanea o peresoza (generada bajo demanda)
           // Estas instancias estarán disponibles desde cualquier parte de la aplicación, solo es cuestión de solicitarlas a Provider.
-          ChangeNotifierProvider(create: (_) => UserIntefaceProvider())
+          ChangeNotifierProvider(create: (_) => UserIntefaceProvider()),
+          ChangeNotifierProvider(create: (_) => ScanService())
         ],
         child: const QRCodeApp()),
   );

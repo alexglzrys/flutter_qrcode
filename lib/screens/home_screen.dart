@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_code_flutter_app/models/scan_model.dart';
 import 'package:qr_code_flutter_app/partials/address_view.dart';
 import 'package:qr_code_flutter_app/partials/maps_view.dart';
-import 'package:qr_code_flutter_app/providers/db_provider.dart';
 import 'package:qr_code_flutter_app/providers/user_interface_provider.dart';
 import 'package:qr_code_flutter_app/widgets/scan_button.dart';
 import 'package:qr_code_flutter_app/widgets/custom_navigation_bar.dart';
@@ -41,11 +39,6 @@ class _HomeScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener la instancia de UserIntefaceProvider (gestionada por Provider)
     final userInterfaceProvider = Provider.of<UserIntefaceProvider>(context);
-
-    // TODO: Temporal leer la base de datos
-    //final newScan = ScanModel(id: 2, type: 'http:', value: 'https://andamar.com');
-    //DBProvider.db.updateScan(newScan);
-    //DBProvider.db.getAllScans();
 
     // Verificar el tab de bavegación inferior actualmente seleccionado, y retornar la vista o partial correspondiente como contenido principal de HomeScreen
     switch (userInterfaceProvider.selectedOptionMenu) {
