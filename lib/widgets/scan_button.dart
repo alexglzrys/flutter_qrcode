@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_flutter_app/services/scan_service.dart';
+import 'package:qr_code_flutter_app/utils/utils.dart';
 
 // Widget encargado de mostrar el botón flotante encargado de activar la camara para detectar los códigos QR y proceder a escanearlos
 class ScanButton extends StatelessWidget {
@@ -21,8 +22,25 @@ class ScanButton extends StatelessWidget {
           barcodeResponse = await FlutterBarcodeScanner.scanBarcode(
               "#00FFFF", 'Cancelar', false, ScanMode.QR);
           print(barcodeResponse);
+          // Verificar si el usuario ha cancelado la captura del código QR (presionó el botón cancelar)
+          if (barcodeResponse == '-1') {
+            return;
+          }
           // Registrar scan en base de datos
-          await scanService.newScan(barcodeResponse);
+          final scan = await scanService.newScan(barcodeResponse);
+
+          // Después de resolverse la promesa, es importante...
+          // Comprobar si el widget asociado al contexto está montado actualmente en el árbol de widgets. Esto ayuda a prevenir problemas que ocurren cuando se intenta interactuar con un widget que ya no forma parte de la escena
+          if (!context.mounted) return;
+
+          // Verificar el tipo de scan,
+          if (scan.type == 'http') {
+            // En caso de un sitio Web, lanzar el navegador apuntando hacia la URL escaneada
+            launchInWebView(Uri.parse(scan.value));
+          } else {
+            // En caso de una coordenada de Geolocalización, mostrar la pantalla de visualización de mapa con los datos del scan capturado como argumento
+            Navigator.pushNamed(context, 'map', arguments: scan);
+          }
         } on PlatformException {
           barcodeResponse = 'Error al obtener la versión de la plataforma';
         }

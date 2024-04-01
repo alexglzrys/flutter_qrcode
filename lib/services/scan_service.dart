@@ -11,7 +11,7 @@ class ScanService extends ChangeNotifier {
   String selectedType = 'http';
 
   // Método para registrar un nuevo scan en base de datos
-  Future<void> newScan(String value) async {
+  Future<ScanModel> newScan(String value) async {
     // Generar una instancia de ScanModel
     final scan = ScanModel(value: value);
     // Almacenar el nuevo ScanModel en base de datos y recuperar el id asignado
@@ -24,6 +24,8 @@ class ScanService extends ChangeNotifier {
       // Notificar a todos los listeners suscritos a este provider, a volverse a renderizar para mostrar los nuevos cambios
       notifyListeners();
     }
+    // Retornar el recurso de scan registrado en base de datos.
+    return scan;
   }
 
   // Método para recuperar todos los registrso de scans almancenados en la base de datos

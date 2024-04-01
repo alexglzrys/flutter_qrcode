@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_flutter_app/services/scan_service.dart';
+import 'package:qr_code_flutter_app/utils/utils.dart';
 
 // Widget encargado de mostrar un listado de los scans filtrados por tipo, almacenados en la base de datos
 class ScanList extends StatelessWidget {
@@ -39,17 +40,26 @@ class ScanList extends StatelessWidget {
             ),
           ),
           child: ListTile(
-            leading: Icon(
-                // Condicionar el icono con base al tipo de scan renderizado en la lista
-                type == 'http'
-                    ? Icons.add_home_work_outlined
-                    : Icons.map_outlined,
-                color: Colors.cyan),
-            title: Text(scans[index].value),
-            subtitle: Text(scans[index].id.toString()),
-            trailing: const Icon(Icons.arrow_forward_ios_outlined),
-            onTap: () => print('scan presionado... ${scans[index].id}'),
-          ),
+              leading: Icon(
+                  // Condicionar el icono con base al tipo de scan renderizado en la lista
+                  type == 'http'
+                      ? Icons.add_home_work_outlined
+                      : Icons.map_outlined,
+                  color: Colors.cyan),
+              title: Text(scans[index].value),
+              subtitle: Text(scans[index].id.toString()),
+              trailing: const Icon(Icons.arrow_forward_ios_outlined),
+              onTap: () {
+                print('scan presionado... ${scans[index].id}');
+                // Verificar el tipo de scan presionado
+                if (scans[index].type == 'http') {
+                  // En caso de un sitio Web, lanzar el navegador apuntando hacia la URL escaneada
+                  launchInWebView(Uri.parse(scans[index].value));
+                } else {
+                  // En caso de una coordenada de Geolocalización, mostrar la pantalla de visualización de mapa con los datos del scan capturado como argumento
+                  Navigator.pushNamed(context, 'map', arguments: scans[index]);
+                }
+              }),
         );
       },
       itemCount: scans.length,
