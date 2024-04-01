@@ -15,12 +15,35 @@ class AddressView extends StatelessWidget {
     final scans = scanService.scans;
     return ListView.builder(
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: const Icon(Icons.add_home_work_outlined, color: Colors.cyan),
-          title: Text(scans[index].value),
-          subtitle: Text(scans[index].id.toString()),
-          trailing: const Icon(Icons.arrow_forward_ios_outlined),
-          onTap: () => print('scan presionado... ${scans[index].id}'),
+        // Dismissible se utiliza comúnmente en combinación con ListView para permitir que los elementos de la lista sean eliminados mediante un gesto de deslizamiento.
+        return Dismissible(
+          // Flutter requiere un identificador por cada elemento en la lista que puede ser eliminado
+          key: UniqueKey(),
+          // Dirección permitida de deslizamiento
+          direction: DismissDirection.endToStart,
+          // Acciones a ejecutar cuando se activa el deslizamiento sobre el elemento
+          onDismissed: (direction) async {
+            // Eliminar el elemento scan de la base de datos
+            await scanService.deleteScanById(scans[index].id!);
+          },
+          // Información visual que se revelará cuando el usuario activa el deslizamiento sobre el elemento
+          background: Container(
+            color: Colors.red,
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.only(right: 20),
+            child: const Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          ),
+          child: ListTile(
+            leading:
+                const Icon(Icons.add_home_work_outlined, color: Colors.cyan),
+            title: Text(scans[index].value),
+            subtitle: Text(scans[index].id.toString()),
+            trailing: const Icon(Icons.arrow_forward_ios_outlined),
+            onTap: () => print('scan presionado... ${scans[index].id}'),
+          ),
         );
       },
       itemCount: scans.length,

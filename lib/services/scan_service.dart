@@ -51,9 +51,9 @@ class ScanService extends ChangeNotifier {
   // Método para eliminar un scan en base de datos
   deleteScanById(int id) async {
     // Eliminar el scan de la base de datos por su id
-    final deletedId = await DBProvider.db.deleteScanById(id);
+    await DBProvider.db.deleteScanById(id);
     // Filtrar el listado de scans actual, omitiendo aquel cuyo id se corresponda con el scan eliminado en base de datos
-    final filter = scans.where((scan) => scan.id != deletedId).toList();
+    final filter = scans.where((scan) => scan.id != id).toList();
     // Actualizar mi listado de scans
     scans = [...filter];
     // Notificar a todos los listeners suscritos a este provider, a volverse a renderizar para mostrar los nuevos cambios
