@@ -19,7 +19,15 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         // Botones con acciones o disparadores de tareas
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.delete_forever))
+          IconButton(
+              onPressed: () async {
+                // Obtener la instancia de ScanService administrada por el gestor de estado Provider
+                final scanService =
+                    Provider.of<ScanService>(context, listen: false);
+                // Borrar todos los registros de scan de la base de datos
+                await scanService.deleteAllScans();
+              },
+              icon: const Icon(Icons.delete_forever))
         ],
       ),
       // El contenido principal de esta página se encuentra condicionado al tab seleccionado en la barra de navegación inferior

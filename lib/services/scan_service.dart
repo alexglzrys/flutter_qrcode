@@ -61,7 +61,7 @@ class ScanService extends ChangeNotifier {
   }
 
   // Método para eliminar todos los registros de scans en la base de datos
-  deleteAllScans() async {
+  Future<void> deleteAllScans() async {
     // Eliminar todos los registros en la base de datos
     await DBProvider.db.deleteAll();
     // Actualizar mi listado de scans
