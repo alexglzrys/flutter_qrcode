@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_code_flutter_app/partials/address_view.dart';
 import 'package:qr_code_flutter_app/partials/maps_view.dart';
 import 'package:qr_code_flutter_app/providers/user_interface_provider.dart';
+import 'package:qr_code_flutter_app/services/scan_service.dart';
 import 'package:qr_code_flutter_app/widgets/scan_button.dart';
 import 'package:qr_code_flutter_app/widgets/custom_navigation_bar.dart';
 
@@ -39,12 +40,18 @@ class _HomeScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtener la instancia de UserIntefaceProvider (gestionada por Provider)
     final userInterfaceProvider = Provider.of<UserIntefaceProvider>(context);
+    // Obtener la instancia de ScanService (gestionada por Provider). En este punto de la aplicación no me interesa escuchar cambios en este servicio
+    final scanService = Provider.of<ScanService>(context, listen: false);
 
     // Verificar el tab de bavegación inferior actualmente seleccionado, y retornar la vista o partial correspondiente como contenido principal de HomeScreen
     switch (userInterfaceProvider.selectedOptionMenu) {
       case 0:
+        // Especificar el tipo de scans a mostrar en la siguiente vista
+        scanService.getScansByType('http');
         return const AddressView();
       case 1:
+        // Especificar el tipo de scans a mostrar en la siguiente vista
+        scanService.getScansByType('geo');
         return const MapsView();
       default:
         return const Center(child: Text('Vista 404'));

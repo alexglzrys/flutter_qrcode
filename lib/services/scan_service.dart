@@ -11,7 +11,7 @@ class ScanService extends ChangeNotifier {
   String selectedType = 'http';
 
   // Método para registrar un nuevo scan en base de datos
-  newScan(String value) async {
+  Future<void> newScan(String value) async {
     // Generar una instancia de ScanModel
     final scan = ScanModel(value: value);
     // Almacenar el nuevo ScanModel en base de datos y recuperar el id asignado
@@ -37,7 +37,7 @@ class ScanService extends ChangeNotifier {
   }
 
   // Método para recuperar todos los scans relacionados con un tipo en particular
-  getScansByType(String type) async {
+  Future<void> getScansByType(String type) async {
     // Recuperar todos los scans que pertenecen al tipo especificado de la base de datos
     final myScans = await DBProvider.db.getScansByType(type);
     // Actualizar mi listado de scans

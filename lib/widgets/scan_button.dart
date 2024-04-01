@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_code_flutter_app/services/scan_service.dart';
 
 // Widget encargado de mostrar el botón flotante encargado de activar la camara para detectar los códigos QR y proceder a escanearlos
 class ScanButton extends StatelessWidget {
@@ -10,6 +12,8 @@ class ScanButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
+        // Recuperar la instancia de ScanService administrada por el gestor de estado Provider. No me interesa escuchar los cambios en el estado dentro de este método
+        final scanService = Provider.of<ScanService>(context, listen: false);
         String barcodeResponse;
         try {
           // Invocar el plugin lector de códigos QR
@@ -17,6 +21,8 @@ class ScanButton extends StatelessWidget {
           barcodeResponse = await FlutterBarcodeScanner.scanBarcode(
               "#00FFFF", 'Cancelar', false, ScanMode.QR);
           print(barcodeResponse);
+          // Registrar scan en base de datos
+          await scanService.newScan(barcodeResponse);
         } on PlatformException {
           barcodeResponse = 'Error al obtener la versión de la plataforma';
         }
