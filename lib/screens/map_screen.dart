@@ -17,6 +17,8 @@ class _MapScreenState extends State<MapScreen> {
   // En el contexto de Google Maps en Flutter, este Completer se utiliza típicamente para esperar a que el widget GoogleMap esté completamente inicializado antes de interactuar con él.
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  // Propiedad de estado local para especificar el tipo de mapa a mostrar
+  MapType mapType = MapType.normal;
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +67,26 @@ class _MapScreenState extends State<MapScreen> {
       // Widget de terceros para mostrar una geolocalización en un mapa de Google
       body: GoogleMap(
         myLocationButtonEnabled: false,
-        mapType: MapType.normal,
+        mapType: mapType,
+        zoomControlsEnabled: false,
         markers: markers,
         initialCameraPosition: initialPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Alternar entre dos tipos de mapa (Normal y Satelital)
+            if (mapType == MapType.normal) {
+              mapType = MapType.satellite;
+            } else {
+              mapType = MapType.normal;
+            }
+            // Actualizar el estado interno de este widget para mostrar el nuevo tipo de mapa
+            setState(() {});
+          },
+          child: const Icon(Icons.move_down_sharp)),
     );
   }
 }
