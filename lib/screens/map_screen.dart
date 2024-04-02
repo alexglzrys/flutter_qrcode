@@ -34,12 +34,22 @@ class _MapScreenState extends State<MapScreen> {
       tilt: 50, // Inclinación o perspectiva del mapa
     );
 
+    // Marcadores
+    // (se pueden agregar tantos como se necesiten al momento de mostrar el mapa)
+    Set<Marker> markers = <Marker>{};
+    markers.add(Marker(
+        // Cada marcador necesita un identificador único
+        markerId: const MarkerId('geo-location-main'),
+        // El marcador debe estar colocado en una posición geografica en el mapa
+        position: getLatLng(scan.value)));
+
     return Scaffold(
       appBar: AppBar(title: const Text('Ubicación en mapa')),
       // Widget de terceros para mostrar una geolocalización en un mapa de Google
       body: GoogleMap(
         myLocationButtonEnabled: false,
         mapType: MapType.normal,
+        markers: markers,
         initialCameraPosition: initialPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
