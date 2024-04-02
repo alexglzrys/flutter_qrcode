@@ -44,7 +44,24 @@ class _MapScreenState extends State<MapScreen> {
         position: getLatLng(scan.value)));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ubicación en mapa')),
+      appBar: AppBar(
+        title: const Text('Ubicación en mapa'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                // Esperar a que el Widget de Google Maps este listo para usar su respectivo controlador y poder gestionarlo
+                final GoogleMapController mapController =
+                    await _controller.future;
+                // animar el mapa para proyectar una nueva ubicación
+                // En este caso es regresar a la ubicación original registrada en el scan (los usuarios tienden a desplazarse, hacer zoom, etc)
+                await mapController.animateCamera(
+                    CameraUpdate.newCameraPosition(CameraPosition(
+                        target: getLatLng(scan.value), zoom: 17.5, tilt: 50)));
+              },
+              icon: const Icon(Icons.location_disabled_rounded))
+        ],
+      ),
       // Widget de terceros para mostrar una geolocalización en un mapa de Google
       body: GoogleMap(
         myLocationButtonEnabled: false,
